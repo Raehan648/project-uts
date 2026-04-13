@@ -1,0 +1,7 @@
+{
+  "name": "IbadahAssistantApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

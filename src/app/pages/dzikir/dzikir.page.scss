@@ -1,0 +1,89 @@
+:host { --gold:#c9973a;--gold-light:#f0c060;--teal:#0d7a6e;--text:#e8dfc8;--muted:#8a9bb5; }
+.dzikir-toolbar { --background:#0a1628; --border-color:rgba(201,151,58,0.2); }
+.dzikir-title { font-family:'Amiri',serif; font-size:20px; color:var(--gold-light); }
+.dzikir-content { --background:#0a1628; }
+
+.tab-pills {
+  display:flex; gap:8px; padding:14px 16px 0;
+  .tab-pill {
+    flex:1; text-align:center; padding:8px 4px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px; font-size:12px; font-weight:700;
+    color:#8a9bb5; cursor:pointer; transition:all 0.2s;
+    &--active { background:rgba(201,151,58,0.15); color:var(--gold); border-color:rgba(201,151,58,0.4); }
+  }
+}
+
+/* Tasbih Card */
+.tasbih-card {
+  margin:16px; padding:24px 20px;
+  background:linear-gradient(135deg,#0d3d35,#0a2a48);
+  border:1px solid rgba(201,151,58,0.25); border-radius:24px;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+}
+.tc-progress-ring {
+  position:relative; width:130px; height:130px;
+  svg { width:100%; height:100%; transform:rotate(-90deg); }
+  .ring-bg   { fill:none; stroke:rgba(255,255,255,0.06); stroke-width:8; }
+  .ring-fill { fill:none; stroke:url(#ringGrad); stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 0.4s ease; }
+}
+.tc-count-wrap {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.tc-count  { font-size:40px; font-weight:800; color:var(--gold-light); line-height:1; }
+.tc-target { font-size:13px; color:var(--muted); }
+.tc-arabic { font-family:'Scheherazade New',serif; font-size:22px; color:var(--gold-light); text-align:center; }
+.tc-latin  { font-size:12px; color:var(--muted); font-style:italic; }
+.tc-total  { font-size:11px; color:var(--teal); font-weight:700; }
+
+.tap-btn {
+  width:80px; height:80px; border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),#094e44);
+  border:2px solid rgba(201,151,58,0.4);
+  box-shadow:0 8px 28px rgba(13,122,110,0.45);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:transform 0.1s, box-shadow 0.1s;
+  &:active { transform:scale(0.92); box-shadow:0 4px 14px rgba(13,122,110,0.3); }
+}
+.tap-inner { font-family:'Scheherazade New',serif; font-size:20px; color:var(--gold-light); }
+.tc-controls { display:flex; gap:8px; }
+.ctrl-btn { --border-color:rgba(201,151,58,0.3); --color:var(--muted); font-size:12px; }
+
+/* Tasbih Selector */
+.section-label { padding:16px 20px 8px; font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--muted); font-weight:700; }
+.tasbih-selector { padding:0 16px; display:flex; flex-direction:column; gap:8px; }
+.ts-item {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(201,151,58,0.1);
+  border-radius:14px; padding:12px 16px; cursor:pointer; transition:all 0.2s;
+  display:flex; align-items:center; gap:12px;
+  &--active { background:rgba(201,151,58,0.1); border-color:rgba(201,151,58,0.4); }
+  &:active { opacity:0.8; }
+}
+.ts-arabic { font-family:'Scheherazade New',serif; font-size:18px; color:var(--gold-light); flex:1; text-align:right; }
+.ts-latin  { font-size:11px; color:var(--muted); flex:2; }
+.ts-target { font-size:11px; color:var(--teal); font-weight:700; white-space:nowrap; }
+
+/* Dzikir List */
+.dzikir-header-info { padding:16px 20px 8px; }
+.dhi-title { font-family:'Amiri',serif; font-size:22px; color:var(--gold-light); }
+.dhi-sub   { font-size:12px; color:var(--muted); }
+.dzikir-list { padding:0 16px; display:flex; flex-direction:column; gap:10px; }
+.dzikir-card {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(201,151,58,0.12);
+  border-radius:16px; padding:16px; cursor:pointer; transition:all 0.2s;
+  &:active { opacity:0.8; }
+  &--done {
+    background:rgba(13,122,110,0.1); border-color:rgba(13,122,110,0.35);
+    opacity:0.6;
+  }
+}
+.dc-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.dc-num { width:26px; height:26px; border-radius:7px; background:rgba(201,151,58,0.15); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:var(--gold); }
+.dc-check { font-size:20px; color:var(--teal); }
+.dc-arabic { font-family:'Scheherazade New',serif; font-size:22px; color:var(--text); text-align:right; line-height:1.8; direction:rtl; }
+.dc-latin  { font-size:11px; color:var(--muted); font-style:italic; margin-top:6px; }
+.dc-arti   { font-size:12px; color:rgba(232,223,200,0.7); margin-top:4px; line-height:1.6; }
+.dc-target { font-size:10px; color:var(--teal); font-weight:700; margin-top:8px; }
+.bottom-spacer { height:24px; }

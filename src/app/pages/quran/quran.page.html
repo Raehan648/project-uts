@@ -1,0 +1,72 @@
+<ion-header class="quran-header">
+  <ion-toolbar>
+    <ion-title class="quran-title">Al-Qur'an</ion-title>
+    <ion-badge slot="end" class="surah-badge">114 Surah</ion-badge>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="quran-content">
+
+  <!-- Search -->
+  <div class="search-wrap">
+    <ion-searchbar
+      placeholder="Cari nama surah..."
+      [debounce]="300"
+      (ionInput)="onSearch($event)"
+      class="custom-searchbar"
+    ></ion-searchbar>
+  </div>
+
+  <!-- Filter Chips -->
+  <div class="filter-chips">
+    <ion-chip [class.chip--active]="activeFilter==='all'"    (click)="setFilter('all')">Semua</ion-chip>
+    <ion-chip [class.chip--active]="activeFilter==='makkiyah'" (click)="setFilter('makkiyah')">Makkiyah</ion-chip>
+    <ion-chip [class.chip--active]="activeFilter==='madaniyah'" (click)="setFilter('madaniyah')">Madaniyah</ion-chip>
+  </div>
+
+  <!-- Last Read -->
+  <div class="last-read-card" *ngIf="lastRead" (click)="continueReading()">
+    <div class="lr-icon">📖</div>
+    <div class="lr-info">
+      <div class="lr-label">Lanjutkan Membaca</div>
+      <div class="lr-name">{{ lastRead.surahName }} · Ayat {{ lastRead.ayahNumber }}</div>
+    </div>
+    <ion-icon name="chevron-forward-outline" class="lr-arrow"></ion-icon>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-wrap" *ngIf="isLoading">
+    <ion-spinner name="crescent" color="warning"></ion-spinner>
+    <p>Memuat daftar surah...</p>
+  </div>
+
+  <!-- Surah List -->
+  <ion-list class="surah-list" *ngIf="!isLoading">
+    <ion-item
+      class="surah-item"
+      *ngFor="let s of filteredSurahs"
+      (click)="openSurah(s.number)"
+      detail="false"
+      button
+    >
+      <div class="surah-num" slot="start">{{ s.number }}</div>
+      <ion-label class="surah-label">
+        <div class="sl-name">{{ s.englishName }}</div>
+        <div class="sl-meta">
+          {{ s.numberOfAyahs }} ayat ·
+          <span [class]="'badge-rev badge-rev--' + (s.revelationType === 'Meccan' ? 'makki' : 'madani')">
+            {{ getRevelationLabel(s.revelationType) }}
+          </span>
+        </div>
+      </ion-label>
+      <div class="surah-arabic" slot="end">{{ s.name }}</div>
+    </ion-item>
+  </ion-list>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!isLoading && filteredSurahs.length === 0">
+    <div class="es-icon">🔍</div>
+    <p>Surah tidak ditemukan</p>
+  </div>
+
+</ion-content>

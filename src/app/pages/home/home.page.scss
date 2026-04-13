@@ -1,0 +1,317 @@
+:host {
+  --page-bg: #0a1628;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --border-gold: rgba(201, 151, 58, 0.25);
+  --gold: #c9973a;
+  --gold-light: #f0c060;
+  --teal: #0d7a6e;
+  --text: #e8dfc8;
+  --muted: #8a9bb5;
+}
+
+.home-content {
+  --background: #0a1628;
+  --padding-top: 0;
+}
+
+/* ── Background Geo ── */
+.geo-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.geo-circle {
+  position: absolute;
+  border-radius: 50%;
+  &--1 {
+    top: -80px; right: -80px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(13,122,110,0.18) 0%, transparent 70%);
+  }
+  &--2 {
+    bottom: 120px; left: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(201,151,58,0.1) 0%, transparent 70%);
+  }
+}
+.geo-stars {
+  position: absolute;
+  top: 60px; right: 24px;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 6px;
+  opacity: 0.35;
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+
+/* ── Header ── */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 56px 20px 0;
+  position: relative;
+  z-index: 1;
+}
+.app-logo {
+  font-family: 'Amiri', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.5px;
+}
+.hijri-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--teal);
+  font-weight: 700;
+  ion-icon { font-size: 12px; }
+}
+.avatar-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-gold);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  ion-icon { font-size: 24px; color: var(--gold); }
+}
+
+/* ── Greeting ── */
+.greeting-section {
+  padding: 16px 20px 4px;
+  position: relative; z-index: 1;
+  animation: fadeUp 0.5s ease both;
+}
+.arabic-greeting {
+  font-family: 'Scheherazade New', serif;
+  font-size: 22px;
+  color: var(--gold-light);
+  text-align: right;
+  margin-bottom: 4px;
+}
+.greeting-text {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+  .name { color: var(--text); font-weight: 800; }
+}
+
+/* ── Loading / Error ── */
+.loading-card, .error-card {
+  margin: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  p { font-size: 13px; color: var(--muted); margin-top: 10px; }
+}
+.error-card ion-icon {
+  font-size: 32px; color: #e06060;
+}
+
+/* ── Next Prayer Card ── */
+.next-prayer-card {
+  margin: 14px 16px 0;
+  background: linear-gradient(135deg, #0d3d35 0%, #0a2a48 100%);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 18px 20px 14px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  animation: fadeUp 0.5s 0.1s ease both;
+
+  &::after {
+    content: '🕌';
+    position: absolute;
+    right: 14px; top: 50%; transform: translateY(-50%);
+    font-size: 52px; opacity: 0.1;
+    pointer-events: none;
+  }
+}
+.npc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.npc-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.npc-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.npc-name-ar {
+  font-family: 'Scheherazade New', serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+}
+.npc-time-wrap { text-align: right; }
+.npc-time {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--gold-light);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.npc-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--teal);
+  font-weight: 700;
+  margin-top: 4px;
+  ion-icon { font-size: 13px; }
+}
+.npc-progress-bar {
+  margin-top: 14px;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+}
+.npc-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 99px;
+  transition: width 0.8s ease;
+}
+
+/* ── Prayer List ── */
+.prayer-list {
+  margin: 14px 16px 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  overflow: hidden;
+  z-index: 1;
+  position: relative;
+  animation: fadeUp 0.5s 0.2s ease both;
+}
+.prayer-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.2s;
+
+  &:last-child { border-bottom: none; }
+
+  &--next {
+    background: rgba(201,151,58,0.08);
+    .pr-name { color: var(--gold-light); font-weight: 800; }
+    .pr-time { color: var(--gold-light); }
+  }
+  &--done {
+    opacity: 0.45;
+  }
+}
+.pr-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  flex-shrink: 0;
+  transition: all 0.3s;
+
+  &--active {
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+  &--done {
+    background: var(--teal);
+  }
+}
+.pr-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.pr-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pr-ar {
+  font-family: 'Scheherazade New', serif;
+  font-size: 12px;
+  color: var(--muted);
+}
+.pr-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pr-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.pr-check { font-size: 15px; color: var(--teal); }
+
+/* ── Section Label ── */
+.section-label {
+  padding: 18px 20px 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  font-weight: 700;
+  position: relative; z-index: 1;
+}
+
+/* ── Menu Grid ── */
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 16px;
+  position: relative; z-index: 1;
+  animation: fadeUp 0.5s 0.3s ease both;
+}
+.menu-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  padding: 16px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  active: { transform: scale(0.97); }
+
+  &:active { transform: scale(0.97); background: rgba(255,255,255,0.08); }
+
+  &--gold {
+    background: rgba(201,151,58,0.08);
+    border-color: rgba(201,151,58,0.35);
+  }
+}
+.mc-icon { font-size: 28px; margin-bottom: 8px; }
+.mc-label { font-size: 13px; font-weight: 800; color: var(--text); }
+.mc-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+.bottom-spacer { height: 24px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

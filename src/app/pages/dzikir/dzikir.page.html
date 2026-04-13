@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar class="dzikir-toolbar">
+    <ion-title class="dzikir-title">Dzikir & Tasbih</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="dzikir-content">
+
+  <!-- Tab Pills -->
+  <div class="tab-pills">
+    <div class="tab-pill" [class.tab-pill--active]="activeTab==='tasbih'"  (click)="activeTab='tasbih'">📿 Tasbih</div>
+    <div class="tab-pill" [class.tab-pill--active]="activeTab==='pagi'"    (click)="activeTab='pagi'">🌅 Pagi</div>
+    <div class="tab-pill" [class.tab-pill--active]="activeTab==='petang'"  (click)="activeTab='petang'">🌆 Petang</div>
+  </div>
+
+  <!-- ═══ TASBIH TAB ═══ -->
+  <div *ngIf="activeTab==='tasbih'">
+
+    <!-- Counter Display -->
+    <div class="tasbih-card">
+      <div class="tc-progress-ring">
+        <svg viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="54" class="ring-bg"/>
+          <circle cx="60" cy="60" r="54" class="ring-fill"
+            [style.stroke-dasharray]="339.29"
+            [style.stroke-dashoffset]="339.29 * (1 - progressPercent/100)"/>
+        </svg>
+        <div class="tc-count-wrap">
+          <div class="tc-count">{{ count }}</div>
+          <div class="tc-target">/ {{ selectedTasbih.target }}</div>
+        </div>
+      </div>
+
+      <div class="tc-arabic">{{ selectedTasbih.arabic }}</div>
+      <div class="tc-latin">{{ selectedTasbih.latin }}</div>
+
+      <div class="tc-total">Total: {{ totalCount }}×</div>
+
+      <!-- Tap Button -->
+      <button class="tap-btn" (click)="tap()">
+        <span class="tap-inner">ذِكْر</span>
+      </button>
+
+      <!-- Controls -->
+      <div class="tc-controls">
+        <ion-button fill="outline" size="small" class="ctrl-btn" (click)="resetCount()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon> Reset
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Tasbih Selector -->
+    <div class="section-label">Pilih Dzikir</div>
+    <div class="tasbih-selector">
+      <div
+        class="ts-item"
+        *ngFor="let t of tasbihList"
+        [class.ts-item--active]="selectedTasbih === t"
+        (click)="selectTasbih(t)"
+      >
+        <div class="ts-arabic">{{ t.arabic }}</div>
+        <div class="ts-latin">{{ t.latin }}</div>
+        <div class="ts-target">{{ t.target }}×</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ DZIKIR PAGI ═══ -->
+  <div *ngIf="activeTab==='pagi'">
+    <div class="dzikir-header-info">
+      <div class="dhi-title">Dzikir Pagi</div>
+      <div class="dhi-sub">Dibaca setelah Sholat Subuh</div>
+    </div>
+    <div class="dzikir-list">
+      <div
+        class="dzikir-card"
+        *ngFor="let d of dzikirPagi"
+        [class.dzikir-card--done]="isDone(d)"
+        (click)="toggleDone(d)"
+      >
+        <div class="dc-top">
+          <div class="dc-num">{{ d.id }}</div>
+          <ion-icon name="checkmark-circle" *ngIf="isDone(d)" class="dc-check"></ion-icon>
+        </div>
+        <div class="dc-arabic">{{ d.arabic }}</div>
+        <div class="dc-latin">{{ d.latin }}</div>
+        <div class="dc-arti">{{ d.arti }}</div>
+        <div class="dc-target">{{ d.target }}× · Ketuk untuk tandai selesai</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DZIKIR PETANG ═══ -->
+  <div *ngIf="activeTab==='petang'">
+    <div class="dzikir-header-info">
+      <div class="dhi-title">Dzikir Petang</div>
+      <div class="dhi-sub">Dibaca setelah Sholat Ashar</div>
+    </div>
+    <div class="dzikir-list">
+      <div
+        class="dzikir-card"
+        *ngFor="let d of dzikirPetang"
+        [class.dzikir-card--done]="isDone(d)"
+        (click)="toggleDone(d)"
+      >
+        <div class="dc-top">
+          <div class="dc-num">{{ d.id }}</div>
+          <ion-icon name="checkmark-circle" *ngIf="isDone(d)" class="dc-check"></ion-icon>
+        </div>
+        <div class="dc-arabic">{{ d.arabic }}</div>
+        <div class="dc-latin">{{ d.latin }}</div>
+        <div class="dc-arti">{{ d.arti }}</div>
+        <div class="dc-target">{{ d.target }}× · Ketuk untuk tandai selesai</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-spacer"></div>
+</ion-content>

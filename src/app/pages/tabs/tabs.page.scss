@@ -1,0 +1,26 @@
+.custom-tab-bar {
+  --background: rgba(10, 22, 40, 0.97);
+  --border: 1px solid rgba(201, 151, 58, 0.2);
+  --color: var(--ion-color-medium);
+  --color-selected: #c9973a;
+  padding-bottom: env(safe-area-inset-bottom);
+  height: 64px;
+
+  ion-tab-button {
+    --color: #6b7a90;
+    --color-selected: #c9973a;
+    font-size: 10px;
+    letter-spacing: 0.3px;
+
+    ion-icon {
+      font-size: 22px;
+      margin-bottom: 2px;
+    }
+
+    &.tab-selected {
+      ion-icon {
+        filter: drop-shadow(0 0 6px rgba(201, 151, 58, 0.6));
+      }
+    }
+  }
+}

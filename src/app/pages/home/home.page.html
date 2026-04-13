@@ -1,0 +1,114 @@
+<ion-content class="home-content" [fullscreen]="true">
+
+  <!-- Background decoration -->
+  <div class="geo-bg">
+    <div class="geo-circle geo-circle--1"></div>
+    <div class="geo-circle geo-circle--2"></div>
+    <div class="geo-stars">✦ ✧ ✦</div>
+  </div>
+
+  <!-- Status / Header -->
+  <div class="home-header">
+    <div class="header-left">
+      <div class="app-logo">Ibadah Assistant</div>
+      <div class="hijri-badge" *ngIf="hijriDate">
+        <ion-icon name="moon"></ion-icon> {{ hijriDate }}
+      </div>
+    </div>
+    <div class="avatar-btn" (click)="navigateTo('settings')">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </div>
+  </div>
+
+  <!-- Greeting -->
+  <div class="greeting-section">
+    <div class="arabic-greeting">السَّلَامُ عَلَيْكُمْ</div>
+    <div class="greeting-text">{{ greetingText() }}, <span class="name">{{ userName }}</span> 👋</div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-card" *ngIf="isLoading">
+    <ion-spinner name="crescent" color="warning"></ion-spinner>
+    <p>Mendeteksi lokasi & memuat jadwal...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-card" *ngIf="errorMsg && !isLoading">
+    <ion-icon name="warning-outline"></ion-icon>
+    <p>{{ errorMsg }}</p>
+    <ion-button fill="outline" size="small" (click)="loadPrayerData()">Coba Lagi</ion-button>
+  </div>
+
+  <!-- Next Prayer Card -->
+  <div class="next-prayer-card" *ngIf="nextPrayer && !isLoading">
+    <div class="npc-top">
+      <div>
+        <div class="npc-label">Sholat Berikutnya</div>
+        <div class="npc-name">{{ nextPrayer.name }}</div>
+        <div class="npc-name-ar">{{ nextPrayer.nameAr }}</div>
+      </div>
+      <div class="npc-time-wrap">
+        <div class="npc-time">{{ nextPrayer.time }}</div>
+        <div class="npc-countdown">
+          <ion-icon name="time-outline"></ion-icon>
+          {{ countdown }}
+        </div>
+      </div>
+    </div>
+    <div class="npc-progress-bar">
+      <div class="npc-progress-fill" [style.width]="getProgressWidth()"></div>
+    </div>
+  </div>
+
+  <!-- Prayer List -->
+  <div class="prayer-list" *ngIf="prayerList.length > 0 && !isLoading">
+    <div
+      class="prayer-row"
+      *ngFor="let p of prayerList"
+      [class.prayer-row--next]="isNext(p)"
+      [class.prayer-row--done]="isPassed(p.time) && !isNext(p)"
+    >
+      <div class="pr-dot" [class.pr-dot--active]="isNext(p)" [class.pr-dot--done]="isPassed(p.time) && !isNext(p)"></div>
+      <div class="pr-info">
+        <span class="pr-name">{{ p.name }}</span>
+        <span class="pr-ar">{{ p.nameAr }}</span>
+      </div>
+      <div class="pr-right">
+        <span class="pr-time">{{ p.time }}</span>
+        <ion-icon name="checkmark-circle" *ngIf="isPassed(p.time) && !isNext(p)" class="pr-check"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Menu -->
+  <div class="section-label">Fitur Utama</div>
+  <div class="menu-grid">
+
+    <div class="menu-card" (click)="navigateTo('quran')">
+      <div class="mc-icon">📖</div>
+      <div class="mc-label">Al-Qur'an</div>
+      <div class="mc-desc">114 Surah Lengkap</div>
+    </div>
+
+    <div class="menu-card" (click)="navigateTo('dzikir')">
+      <div class="mc-icon">📿</div>
+      <div class="mc-label">Dzikir</div>
+      <div class="mc-desc">Tasbih Digital</div>
+    </div>
+
+    <div class="menu-card" (click)="navigateTo('qibla')">
+      <div class="mc-icon">🕋</div>
+      <div class="mc-label">Kiblat</div>
+      <div class="mc-desc">Kompas Arah</div>
+    </div>
+
+    <div class="menu-card menu-card--gold" (click)="navigateTo('dzikir')">
+      <div class="mc-icon">🌙</div>
+      <div class="mc-label">Doa Harian</div>
+      <div class="mc-desc">50+ Doa Pilihan</div>
+    </div>
+
+  </div>
+
+  <div class="bottom-spacer"></div>
+</ion-content>

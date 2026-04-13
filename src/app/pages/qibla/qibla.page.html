@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Arah Kiblat</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refresh()">
+        <ion-icon name="refresh-outline" color="warning"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollY]="true">
+
+  <!-- Loading -->
+  <div class="center-wrap" *ngIf="isLoading">
+    <ion-spinner name="crescent" color="warning"></ion-spinner>
+    <p class="hint-text">Mendeteksi lokasi GPS...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="center-wrap" *ngIf="errorMsg && !isLoading">
+    <div class="err-emoji">📍</div>
+    <p class="hint-text">{{ errorMsg }}</p>
+    <ion-button color="warning" fill="outline" size="small" (click)="refresh()">
+      Coba Lagi
+    </ion-button>
+  </div>
+
+  <!-- Compass Content -->
+  <div class="qibla-body" *ngIf="!isLoading && !errorMsg">
+
+    <!-- Compass -->
+    <div class="compass-ring">
+      <span class="dir north">U</span>
+      <span class="dir south">S</span>
+      <span class="dir east">T</span>
+      <span class="dir west">B</span>
+
+      <!-- Rotating face -->
+      <div class="compass-face" [ngStyle]="{'transform': 'rotate(' + (-compassAngle) + 'deg)'}">
+        <div class="tick" *ngFor="let t of ticks" [ngStyle]="{'transform': 'rotate(' + t + 'deg)'}"></div>
+      </div>
+
+      <!-- Needle -->
+      <div class="needle-wrap" [ngStyle]="{'transform': 'rotate(' + needleAngle + 'deg)'}">
+        <div class="n-top">🕋</div>
+        <div class="n-dot"></div>
+        <div class="n-bottom"></div>
+      </div>
+    </div>
+
+    <!-- Degree -->
+    <div class="degree-box">
+      <div class="degree-big">{{ qiblaAngle }}°</div>
+      <div class="degree-label">dari Utara ke arah Kiblat</div>
+    </div>
+
+    <!-- Info -->
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-emoji">📍</div>
+        <div class="info-body">
+          <div class="info-lbl">Koordinat Anda</div>
+          <div class="info-val">{{ latitude | number:'1.2-2' }}°, {{ longitude | number:'1.2-2' }}°</div>
+        </div>
+      </div>
+      <div class="info-card teal">
+        <div class="info-emoji">🕋</div>
+        <div class="info-body">
+          <div class="info-lbl">Jarak ke Makkah</div>
+          <div class="info-val">{{ distance | number }} km</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="gps-row">
+      <div class="gps-dot"></div>
+      <span>GPS Aktif · Koordinat Terdeteksi</span>
+    </div>
+
+    <!-- Note -->
+    <div class="note-box">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      Di browser kompas statis. Di Android kompas bergerak otomatis sesuai arah.
+    </div>
+
+  </div>
+
+</ion-content>

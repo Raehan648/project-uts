@@ -16,23 +16,42 @@ export class LocationService {
     const cached = this.coords$.getValue();
     if (cached) return cached;
 
-    const perm = await Geolocation.checkPermissions();
-    if (perm.location === 'denied') {
-      await Geolocation.requestPermissions();
+    try {
+      // Periksa izin
+      const perm = await Geolocation.checkPermissions();
+      if (perm.location === 'denied' || perm.location === 'prompt') {
+        const req = await Geolocation.requestPermissions();
+        if (req.location !== 'granted') {
+          throw new Error('Izin lokasi ditolak oleh pengguna.');
+        }
+      }
+
+      // Ambil posisi
+      const pos: Position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 8_000,
+      });
+
+      const coords: Coords = {
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      };
+
+      this.coords$.next(coords);
+      return coords;
+    } catch (error) {
+      console.warn('Gagal mendapatkan koordinat GPS, menggunakan lokasi default.', error);
+      
+      // Fallback Coordinates (Jakarta / Karawang Area)
+      const defaultCoords: Coords = {
+        latitude: -6.2088,
+        longitude: 106.8456,
+        city: 'Jakarta'
+      };
+
+      this.coords$.next(defaultCoords);
+      return defaultCoords;
     }
-
-    const pos: Position = await Geolocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 10_000,
-    });
-
-    const coords: Coords = {
-      latitude: pos.coords.latitude,
-      longitude: pos.coords.longitude,
-    };
-
-    this.coords$.next(coords);
-    return coords;
   }
 
   /** Hitung jarak ke Mekkah dalam km menggunakan Haversine */

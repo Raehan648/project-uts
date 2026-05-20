@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { PrayerService, PrayerItem } from '../../services/prayer';
 import { LocationService } from '../../services/location';
 import { StorageService } from '../../services/storage';
 import { NotificationService } from '../../services/notification';
+import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +37,9 @@ export class HomePage implements OnInit, OnDestroy {
     const savedName = await this.storageSvc.get<string>('userName');
     if (savedName) this.userName = savedName;
 
+    // 1. Pastikan izin lokasi diperiksa/diminta terlebih dahulu saat aplikasi dimuat
+    await this.checkLocation();
+
     await this.loadPrayerData();
     this.loadHijriDate();
 
@@ -48,12 +53,25 @@ export class HomePage implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMsg = '';
     try {
-      const coords = await this.locationSvc.getCurrentPosition();
-      this.prayerSvc.getTodayTimings(coords.latitude, coords.longitude).subscribe({
+      // 2. Tangani jika lokasi ditolak agar aplikasi tidak crash
+      const coords = await this.locationSvc.getCurrentPosition().catch(() => {
+        return { latitude: -6.2088, longitude: 106.8456 }; // Koordinat fallback (Jakarta)
+      });
+
+      this.prayerSvc.getTodayTimings(coords.latitude, coords.longitude).pipe(
+        catchError((err) => {
+          console.error('Gagal mengambil jadwal:', err);
+          return of(null);
+        })
+      ).subscribe({
         next: (timings) => {
-          this.prayerList = this.prayerSvc.buildPrayerList(timings);
-          this.prayerSvc.startCountdown(this.prayerList);
-          this.notifSvc.schedulePrayerReminders(this.prayerList);
+          if (timings) {
+            this.prayerList = this.prayerSvc.buildPrayerList(timings);
+            this.prayerSvc.startCountdown(this.prayerList);
+            this.notifSvc.schedulePrayerReminders(this.prayerList);
+          } else {
+            this.errorMsg = 'Jadwal sholat tidak dapat dimuat, menggunakan data perkiraan.';
+          }
           this.isLoading = false;
         },
         error: () => {
@@ -64,6 +82,17 @@ export class HomePage implements OnInit, OnDestroy {
     } catch {
       this.errorMsg = 'Izin lokasi diperlukan untuk menampilkan jadwal sholat.';
       this.isLoading = false;
+    }
+  }
+
+  async checkLocation() {
+    try {
+      const check = await Geolocation.checkPermissions();
+      if (check.location === 'prompt' || check.location === 'denied') {
+        await Geolocation.requestPermissions();
+      }
+    } catch (e) {
+      console.warn('Gagal meminta izin lokasi:', e);
     }
   }
 
@@ -89,7 +118,7 @@ export class HomePage implements OnInit, OnDestroy {
   getProgressWidth(): string {
     if (!this.nextPrayer || this.prayerList.length === 0) return '0%';
     const idx = this.prayerList.findIndex((p) => p.name === this.nextPrayer?.name);
-    return `${((idx) / this.prayerList.length) * 100}%`;
+    return `${(idx / this.prayerList.length) * 100}%`;
   }
 
   greetingText(): string {

@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   // ── Identity ──────────────────────────────────────
-  appId:   'com.ibadahassistant.app',   // ID unik Play Store
+  appId:   'com.rehalivan.ibadahassistant',   // ID unik Play Store
   appName: 'Ibadah Assistant App',
 
   // ── Web output ────────────────────────────────────

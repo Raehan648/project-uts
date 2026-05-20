@@ -41,48 +41,4 @@
     </div>
   </div>
 
-  <!-- TAMPILAN -->
-  <div class="section-label">TAMPILAN</div>
-  <div class="card-group">
-    <div class="card-row">
-      <div class="row-icon" style="background:#1a2a4a;">🌙</div>
-      <div class="row-body">
-        <div class="row-title">Tema Gelap</div>
-        <div class="row-sub">{{ isDarkMode ? 'Dark Mode aktif' : 'Light Mode aktif' }}</div>
-      </div>
-      <ion-toggle [(ngModel)]="isDarkMode" (ionChange)="toggleTheme()" class="my-toggle"></ion-toggle>
-    </div>
-    <div class="divider-line"></div>
-    <div class="card-row" (click)="changeFontSize()">
-      <div class="row-icon" style="background:#1a3a4a;">🔤</div>
-      <div class="row-body">
-        <div class="row-title">Ukuran Font Arab</div>
-        <div class="row-sub">{{ fontSizeLabel }}</div>
-      </div>
-      <ion-icon name="chevron-forward" class="row-arrow"></ion-icon>
-    </div>
-  </div>
-
-  <!-- TENTANG APLIKASI -->
-  <div class="section-label">TENTANG APLIKASI</div>
-  <div class="card-group">
-    <div class="card-row">
-      <div class="row-icon" style="background:#1a3060;">ℹ️</div>
-      <div class="row-body">
-        <div class="row-title">Versi</div>
-        <div class="row-sub">Ibadah Assistant App v{{ appVersion }}</div>
-      </div>
-    </div>
-    <div class="divider-line"></div>
-    <div class="card-row" (click)="showAbout()">
-      <div class="row-icon" style="background:#1a2a40;">⚙️</div>
-      <div class="row-body">
-        <div class="row-title">Kontak Developer</div>
-        <div class="row-sub">UTS Mobile Programming 2025</div>
-      </div>
-      <ion-icon name="chevron-forward" class="row-arrow"></ion-icon>
-    </div>
-  </div>
-
-  <div style="height: 32px;"></div>
 </ion-content>

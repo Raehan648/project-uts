@@ -1,13 +1,64 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>quran-detail</ion-title>
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="detail">
+      {{ detail.surah.englishName }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleTranslation()">
+        <ion-icon slot="icon-only" [name]="showTranslation ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">quran-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div *ngIf="isLoading" class="ion-text-center ion-padding mt-5">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Memuat Surah...</p>
+  </div>
+
+  <div *ngIf="!isLoading && detail">
+    <div class="surah-header-card ion-padding">
+      <div class="overlay-content">
+        <h1>{{ detail.surah.name }}</h1>
+        <h3>{{ detail.surah.englishNameTranslation }}</h3>
+        <p>{{ detail.surah.revelationType }} • {{ detail.surah.numberOfAyahs }} Ayat</p>
+      </div>
+    </div>
+
+    <div class="bismillah-container ion-text-center ion-padding" *ngIf="detail.surah.number !== 9">
+      <h2 class="arabic-font">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
+    </div>
+
+    <ion-list lines="none">
+      <ion-item *ngFor="let ayah of detail.ayahs" class="ayah-item">
+        <ion-label class="ion-text-wrap">
+          <div class="ayah-header">
+            <div class="ayah-number">{{ ayah.numberInSurah }}</div>
+            <div class="ayah-actions">
+              <ion-button fill="clear" (click)="playAudio(ayah)">
+                <ion-icon [name]="isPlaying(ayah) ? 'pause' : 'play-circle'" color="primary"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" (click)="toggleBookmark(ayah)">
+                <ion-icon [name]="isBookmarked(ayah) ? 'bookmark' : 'bookmark-outline'" color="primary"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+
+          <p class="arabic-text ion-text-right arabic-font" [class.playing]="isPlaying(ayah)">
+            {{ ayah.text }}
+          </p>
+
+          <p class="translation-text" *ngIf="showTranslation">
+            {{ ayah.translation }}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage';
-import { ThemeService } from '../../services/theme';
 import { NotificationService } from '../../services/notification';
-
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
@@ -11,8 +9,8 @@ import { NotificationService } from '../../services/notification';
   standalone: false,
 })
 export class SettingsPage implements OnInit {
-  userName      = 'Ahmad Fauzi';
-  cityName      = 'Cikampek, Jawa Barat';
+  userName      = '';
+  cityName      = 'Jawa Barat';
   prayerMethod  = 'Kemenag RI';
   isDarkMode    = true;
   notifAdzan    = true;
@@ -22,10 +20,9 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private storageSvc: StorageService,
-    private themeSvc: ThemeService,
     private notifSvc: NotificationService,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
   ) {}
 
   async ngOnInit() {
@@ -34,7 +31,6 @@ export class SettingsPage implements OnInit {
     this.prayerMethod = (await this.storageSvc.get<string>('prayerMethod')) ?? 'Kemenag RI';
     this.notifAdzan   = (await this.storageSvc.get<boolean>('notifAdzan'))  ?? true;
     this.notifDzikir  = (await this.storageSvc.get<boolean>('notifDzikir')) ?? true;
-    this.isDarkMode   = this.themeSvc.theme$.getValue() === 'dark';
   }
 
   async editProfile() {
@@ -62,18 +58,13 @@ export class SettingsPage implements OnInit {
 
   async toggleNotifAdzan() {
     await this.storageSvc.set('notifAdzan', this.notifAdzan);
-    if (!this.notifAdzan) await this.notifSvc.cancelAll();
+    if (this.notifAdzan) await this.notifSvc.cancelAll();
     this.showToast(this.notifAdzan ? 'Adzan aktif ✓' : 'Adzan dinonaktifkan');
   }
 
   async toggleNotifDzikir() {
     await this.storageSvc.set('notifDzikir', this.notifDzikir);
     this.showToast(this.notifDzikir ? 'Dzikir pagi aktif ✓' : 'Dinonaktifkan');
-  }
-
-  async toggleTheme() {
-    await this.themeSvc.toggleTheme();
-    this.isDarkMode = this.themeSvc.theme$.getValue() === 'dark';
   }
 
   async changeFontSize() {
